@@ -4,8 +4,8 @@ import (
 	"flag"
 	"strings"
 
-	dht "github.com/libp2p/go-libp2p-kad-dht"
 	maddr "github.com/multiformats/go-multiaddr"
+	multiaddr "github.com/multiformats/go-multiaddr"
 )
 
 // A new type we need for writing a custom flag parser
@@ -56,7 +56,31 @@ func ParseFlags() (Config, error) {
 	flag.Parse()
 
 	if len(config.BootstrapPeers) == 0 {
-		config.BootstrapPeers = dht.DefaultBootstrapPeers
+		//config.BootstrapPeers = dht.DefaultBootstrapPeers
+		// ma, err := maddr.NewMultiaddr("/ip4/220.194.157.80/tcp/4001/p2p/QmP2C45o2vZfy1JXWFZDUEzrQCigMtd4r3nesvArV8dFKd")
+		// ma, err := maddr.NewMultiaddr("/ip4/192.168.1.175/tcp/4001/p2p/QmdSyhb8eR9dDSR5jjnRoTDBwpBCSAjT7WueKJ9cQArYoA")
+		// if err != nil {
+		// 	panic(err)
+		// }
+
+		// config.BootstrapPeers = append(config.BootstrapPeers, ma)
+
+		for _, s := range []string{
+			// "/dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN",
+			// "/dnsaddr/bootstrap.libp2p.io/p2p/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa",
+			// "/dnsaddr/bootstrap.libp2p.io/p2p/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb",
+			// "/dnsaddr/bootstrap.libp2p.io/p2p/QmcZf59bWwK5XFi76CZX8cbJ4BhTzzA3gU1ZjYZcYW3dwt",
+			// "/ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ", // mars.i.ipfs.io
+			"/ip4/220.194.157.80/tcp/4001/p2p/QmP2C45o2vZfy1JXWFZDUEzrQCigMtd4r3nesvArV8dFKd",
+			"/ip4/192.168.1.175/tcp/4001/p2p/QmdSyhb8eR9dDSR5jjnRoTDBwpBCSAjT7WueKJ9cQArYoA",
+		} {
+			ma, err := multiaddr.NewMultiaddr(s)
+			if err != nil {
+				panic(err)
+			}
+			// DefaultBootstrapPeers = append(DefaultBootstrapPeers, ma)
+			config.BootstrapPeers = append(config.BootstrapPeers, ma)
+		}
 	}
 
 	return config, nil

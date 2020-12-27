@@ -12,13 +12,11 @@ import (
 	"github.com/libp2p/go-libp2p-core/network"
 	"github.com/libp2p/go-libp2p-core/peer"
 	"github.com/libp2p/go-libp2p-core/protocol"
-	"github.com/libp2p/go-libp2p-discovery"
-
-	dht "github.com/libp2p/go-libp2p-kad-dht"
-	multiaddr "github.com/multiformats/go-multiaddr"
-	logging "github.com/whyrusleeping/go-logging"
+	discovery "github.com/libp2p/go-libp2p-discovery"
 
 	"github.com/ipfs/go-log"
+	dht "github.com/libp2p/go-libp2p-kad-dht"
+	multiaddr "github.com/multiformats/go-multiaddr"
 )
 
 var logger = log.Logger("rendezvous")
@@ -80,7 +78,7 @@ func writeData(rw *bufio.ReadWriter) {
 }
 
 func main() {
-	log.SetAllLoggers(logging.WARNING)
+	//log.SetAllLoggers(logging.WARNING)
 	log.SetLogLevel("rendezvous", "info")
 	help := flag.Bool("h", false, "Display Help")
 	config, err := ParseFlags()
@@ -165,9 +163,9 @@ func main() {
 		if peer.ID == host.ID() {
 			continue
 		}
-		logger.Debug("Found peer:", peer)
+		logger.Warning("Found peer:", peer)
 
-		logger.Debug("Connecting to:", peer)
+		logger.Warning("Connecting to:", peer)
 		stream, err := host.NewStream(ctx, peer.ID, protocol.ID(config.ProtocolID))
 
 		if err != nil {
